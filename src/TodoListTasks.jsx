@@ -6,7 +6,7 @@ class TodoListTasks extends React.Component {
 
         let taskElements = this.props.tasks.map(task => {
             return <TodoListTask title={task.title} isDone={task.isDone} priority={task.priority} />
-        })
+        });
 
         return (
             <div className="todoList-tasks">
@@ -17,8 +17,8 @@ class TodoListTasks extends React.Component {
                 {/*<TodoListTask title={this.props.tasks[3].title} isDone={this.props.tasks[3].isDone}/>*/}
                 {/*<TodoListTask title={this.props.tasks[4].title} isDone={this.props.tasks[4].isDone}/>*/}
             </div>
-        )
-    }
+        );
+    };
 }
 
 export default TodoListTasks;
