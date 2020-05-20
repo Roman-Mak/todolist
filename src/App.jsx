@@ -3,16 +3,34 @@ import './App.css';
 import TodoList from "./TodoList";
 import AddNewItemForm from "./AddNewItemForm";
 import {connect} from "react-redux";
-import {addTodoListAC} from "./reducer";
+import {addTodoListAC, setTodoListsAC} from "./reducer";
+import axios from "axios";
 
 class App extends React.Component {
     newTodoListId = 1;
 
+    // addTodoList = (newTodoListName) => {
+    //     let newTodoList = {id: this.newTodoListId, title: newTodoListName, tasks: []};
+    //     this.newTodoListId++;
+    //     this.props.addTodoList(newTodoList);
+    //     // this.setState({todoLists: [...this.state.todoLists, newTodoList]}, this.saveState);
+    // };
+
     addTodoList = (newTodoListName) => {
-        let newTodoList = {id: this.newTodoListId, title: newTodoListName, tasks: []};
-        this.newTodoListId++;
-        this.props.addTodoList(newTodoList);
-        // this.setState({todoLists: [...this.state.todoLists, newTodoList]}, this.saveState);
+        axios.post(
+            "https://social-network.samuraijs.com/api/1.1/todo-lists",
+            {title: newTodoListName},
+            {
+                withCredentials: true,
+                headers: {"API-KEY": "cd6b66cc-d0ef-4fb7-9f54-808df7c15bee"}
+            }
+        )
+            .then(res => {
+                if (res.data.resultCode === 0) {
+                    let todoList = res.data.data.item;
+                    this.props.addTodoList(todoList);
+                }
+            })
     };
 
     // saveState = () => {
@@ -34,9 +52,16 @@ class App extends React.Component {
     //     });
     // };
 
-    // componentDidMount() {
-    //     this.restoreState();
-    // }
+    restoreState = () => {
+        axios.get("https://social-network.samuraijs.com/api/1.1/todo-lists", {withCredentials: true})
+            .then(res => {
+                this.props.setTodoLists(res.data);
+            });
+    };
+
+    componentDidMount() {
+        this.restoreState();
+    }
 
     render = () => {
         let todoLists = this.props.todoLists.map(t => {
@@ -65,6 +90,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         addTodoList: (newTodoList) => {
             dispatch(addTodoListAC(newTodoList));
+        },
+        setTodoLists: (todoLists) => {
+            dispatch(setTodoListsAC(todoLists))
         }
     }
 };

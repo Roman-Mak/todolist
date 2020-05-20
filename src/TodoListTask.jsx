@@ -3,7 +3,8 @@ import React from "react";
 class TodoListTask extends React.Component {
 
     state = {
-        editMode: false
+        editMode: false,
+        title: this.props.task.title
     };
 
     activateEditMode = () => {
@@ -11,15 +12,17 @@ class TodoListTask extends React.Component {
     };
 
     deactivateEditMode = () => {
-        this.setState({editMode: false})
+        this.props.changeTitle(this.props.task, this.state.title);
+        this.setState({editMode: false, title: ""})
     };
 
     onIsDoneChanged = (e) => {
-        this.props.changeStatus(this.props.task.id, e.currentTarget.checked);
+        let status = e.currentTarget.checked ? 2: 0;
+        this.props.changeStatus(this.props.task, status);
     };
 
     onTitleChanged = (e) => {
-        this.props.changeTitle(this.props.task.id, e.currentTarget.value)
+        this.setState({title: e.currentTarget.value})
     };
 
     deleteTask = () => {
@@ -27,20 +30,19 @@ class TodoListTask extends React.Component {
     };
 
     render = () => {
-
-        let classNameTask = this.props.task.isDone ? "todoList-task done" : "todoList-tasks";
+        let statusTask = this.props.task.status;
+        let classNameTask = statusTask === 2 ? "todoList-task done" : "todoList-tasks";
 
         return (
             <div className={classNameTask}>
                 <input onChange={this.onIsDoneChanged}
                     // {this.props.changeStatus(this.props.task.id, e.currentTarget.checked)}}
                        type="checkbox"
-                       checked={this.props.task.isDone}
+                       checked={statusTask === 2}
                 />
-                <span>{this.props.task.id} - </span>
                 {
                     this.state.editMode
-                        ? <input value={this.props.task.title}
+                        ? <input value={this.state.title}
                                  autoFocus={true}
                                  onBlur={this.deactivateEditMode}
                                  onChange={this.onTitleChanged}
