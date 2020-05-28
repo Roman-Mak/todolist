@@ -25,8 +25,8 @@ class TodoListFooter extends React.Component {
                 <button onClick={this.onCompletedFilterClick} className={classForCompleted}>Completed</button>
                 <button onClick={this.onActiveFilterClick} className={classForActive}>Active</button>
                 </div>}
-                {!this.state.isHidden && <span onClick={this.onHideFilterClick}>hide</span>}
-                {this.state.isHidden && <span onClick={this.onShowFilterClick}>show</span>}
+                {!this.state.isHidden && <span className="showHide" onClick={this.onHideFilterClick}>hide buttons</span>}
+                {this.state.isHidden && <span className="showHide" onClick={this.onShowFilterClick}>show buttons</span>}
             </div>
         )
     }

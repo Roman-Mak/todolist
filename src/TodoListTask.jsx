@@ -1,7 +1,6 @@
 import React from "react";
 
 class TodoListTask extends React.Component {
-
     state = {
         editMode: false,
         title: this.props.task.title
@@ -13,7 +12,7 @@ class TodoListTask extends React.Component {
 
     deactivateEditMode = () => {
         this.props.changeTitle(this.props.task, this.state.title);
-        this.setState({editMode: false, title: ""})
+        this.setState({editMode: false})
     };
 
     onIsDoneChanged = (e) => {
@@ -47,10 +46,10 @@ class TodoListTask extends React.Component {
                                  onBlur={this.deactivateEditMode}
                                  onChange={this.onTitleChanged}
                         />
-                        : <span onClick={this.activateEditMode}>{this.props.task.title}, </span>
+                        : <span onClick={this.activateEditMode}>{this.state.title}, </span>
                 }
                 <span>priority: {this.props.task.priority}</span>
-                <button onClick={this.deleteTask}>x</button>
+                <button className="delete-item" onClick={this.deleteTask}>x</button>
             </div>
         )
     }
