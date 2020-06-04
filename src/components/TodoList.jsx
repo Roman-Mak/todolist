@@ -1,11 +1,11 @@
 import React from 'react';
-import './App.css';
+import '../App.css';
 import AddNewItemForm from "./AddNewItemForm";
 import TodoListTasks from "./TodoListTasks";
 import TodoListFooter from "./TodoListFooter";
 import TodoListTitle from "./TodoListTitle";
 import {connect} from "react-redux";
-import {addTask, changeTask, changeTodoListTitle, deleteTask, deleteTodoList, getTasks} from "./reducer";
+import {addTask, changeTask, changeTodoListTitle, deleteTask, deleteTodoList, getTasks} from "../redux/todoListReducer";
 
 class TodoList extends React.Component {
     state = {
