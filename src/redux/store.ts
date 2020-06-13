@@ -3,7 +3,7 @@ import todoListReducer from "./todoListReducer";
 import thunkMiddleware from "redux-thunk";
 import {composeWithDevTools} from "redux-devtools-extension";
 
-let rootReducers = combineReducers({
+const rootReducers = combineReducers({
     todoLists: todoListReducer
 });
 

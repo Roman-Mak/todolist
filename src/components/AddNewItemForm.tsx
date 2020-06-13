@@ -5,11 +5,12 @@ type StateType = {
     item: string;
 }
 
-type OwnPropsType = {
+type PropsType = {
     addItem: (title: string) => void;
+    placeholder: string;
 }
 
-class AddNewItemForm extends React.Component<OwnPropsType, StateType> {
+class AddNewItemForm extends React.Component<PropsType, StateType> {
     state: StateType = {
         error: false,
         item: ""
@@ -40,14 +41,13 @@ class AddNewItemForm extends React.Component<OwnPropsType, StateType> {
     };
 
     render = () => {
-
         let inputClass = this.state.error ? "error" : "";
 
         return (
                 <div className="addNewTaskForm">
                     <input className={inputClass}
                            type="text"
-                           placeholder="New item name"
+                           placeholder={this.props.placeholder}
                            onChange={this.onItemChanged}
                            onKeyPress={this.onKeyPress}
                            value={this.state.item}

@@ -13,33 +13,42 @@ type CommonApiType<T> = {
     data: T;
 }
 
+type GetTasksType = {
+    totalCount: number;
+    error: string;
+    items: Array<TaskType>;
+}
+
 const api = {
     addTodoList(newTodoListName: string) {
-        return instance.post<CommonApiType<{ item: TodoType }>>("", {title: newTodoListName},)
+        return instance.post<CommonApiType<{ item: TodoType }>>("", {title: newTodoListName})
+            .then(res => res.data);
     },
     getTodoLists() {
-        return instance.get("")
+        return instance.get<Array<TodoType>>("").then(res => res.data);
     },
     changeTodoListTitle(todoListId: string, newTitle: string) {
-        return instance.put(`/${todoListId}`, {title: newTitle})
+        return instance.put<CommonApiType<{ item: TodoType }>>(`/${todoListId}`, {title: newTitle})
+            .then(res => res.data);
     },
     deleteTodoList(todoListId: string) {
-        return instance.delete<CommonApiType<{}>>(`/${todoListId}`)
+        return instance.delete<CommonApiType<{}>>(`/${todoListId}`).then(res => res.data);
     },
 
     getTasks(todoListId: string) {
-        return instance.get(`/${todoListId}/tasks`)
+        return instance.get<GetTasksType>(`/${todoListId}/tasks`).then(res => res.data);
     },
     createTask(newTitle: string, todoListId: string) {
-        return instance.post(`/${todoListId}/tasks`, {title: newTitle})
+        return instance.post<CommonApiType<{ item: TaskType }>>(`/${todoListId}/tasks`, {title: newTitle})
+            .then(res => res.data);
     },
     changeTask(task: TaskType, obj: UpdateTaskType) {
         let newTask = {...task, ...obj};
-        return instance.put(
-            `/${task.todoListId}/tasks/${task.id}`, newTask)
+        return instance.put<CommonApiType<{ item: TaskType }>>(`/${task.todoListId}/tasks/${task.id}`, newTask)
+            .then(res => res.data);
     },
     deleteTask(todoListId: string, taskId: string) {
-        return instance.delete(`/${todoListId}/tasks/${taskId}`,)
+        return instance.delete<CommonApiType<{}>>(`/${todoListId}/tasks/${taskId}`,).then(res => res.data);
     }
 };
 

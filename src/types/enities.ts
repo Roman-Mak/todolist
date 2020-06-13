@@ -3,21 +3,22 @@ export type TodoType = {
     title: string;
     addedDate: string;
     order: number;
-    tasks: Array<TaskType>
+    tasks: Array<TaskType>;
+    taskIsFetching: boolean;
 }
 
 export type TaskType = {
-    description: string
-    title: string
-    completed: boolean
-    status: number
-    priority: number
-    startDate: string
-    deadline: string
-    id: string
-    todoListId: string
-    order: number
-    addedDate: string
+    description: string;
+    title: string;
+    completed: boolean;
+    status: number;
+    priority: number;
+    startDate: string;
+    deadline: string;
+    id: string;
+    todoListId: string;
+    order: number;
+    addedDate: string;
 }
 
 export type UpdateTaskType = {

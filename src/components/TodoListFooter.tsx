@@ -1,9 +1,18 @@
 import React from "react";
+import {FilterValueType} from "./TodoList";
 
-class TodoListFooter extends React.Component {
+type StateType = {
+    isHidden: boolean;
+}
 
-    state = {
-        isHidden: false
+type PropsType = {
+    filterValue: FilterValueType;
+    changeFilter: (filter: FilterValueType) => void;
+}
+
+class TodoListFooter extends React.Component<PropsType, StateType> {
+    state: StateType = {
+        isHidden: false,
     };
 
     onHideFilterClick = () => {this.setState({isHidden: true})};

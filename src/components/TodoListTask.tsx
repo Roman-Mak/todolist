@@ -1,7 +1,20 @@
-import React from "react";
+import React, {ChangeEvent} from "react";
+import {TaskType} from "../types/enities";
 
-class TodoListTask extends React.Component {
-    state = {
+type StateType = {
+    editMode: boolean;
+    title: string;
+}
+
+type PropsType = {
+    task: TaskType;
+    changeStatus: (task: TaskType, status: number) => void;
+    changeTitle: (task: TaskType, title: string) => void;
+    deleteTask: (id: string) => void;
+}
+
+class TodoListTask extends React.Component<PropsType, StateType> {
+    state: StateType = {
         editMode: false,
         title: this.props.task.title
     };
@@ -15,12 +28,12 @@ class TodoListTask extends React.Component {
         this.setState({editMode: false})
     };
 
-    onIsDoneChanged = (e) => {
+    onIsDoneChanged = (e: ChangeEvent<HTMLInputElement>) => {
         let status = e.currentTarget.checked ? 2: 0;
         this.props.changeStatus(this.props.task, status);
     };
 
-    onTitleChanged = (e) => {
+    onTitleChanged = (e: ChangeEvent<HTMLInputElement>) => {
         this.setState({title: e.currentTarget.value})
     };
 

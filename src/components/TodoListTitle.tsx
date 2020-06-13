@@ -1,7 +1,17 @@
-import React from "react";
+import React, {ChangeEvent} from "react";
 
-class TodoListTitle extends React.Component {
-    state = {
+type StateType = {
+    editMode: boolean;
+    title: string;
+}
+
+type PropsType = {
+    title: string;
+    changeTodoListTitle: (title: string) => void;
+}
+
+class TodoListTitle extends React.Component<PropsType, StateType> {
+    state: StateType = {
         editMode: false,
         title: this.props.title
     };
@@ -15,7 +25,7 @@ class TodoListTitle extends React.Component {
         this.setState({editMode: false})
     };
 
-    onTitleChanged = (e) => {
+    onTitleChanged = (e: ChangeEvent<HTMLInputElement>) => {
         this.setState({title: e.currentTarget.value})
     };
 
