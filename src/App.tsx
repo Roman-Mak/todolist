@@ -33,7 +33,8 @@ class App extends React.Component<PropsType> {
             <div className="App">
                 <div className="headItemForm">
                     <span className="createTodoText">Create new TodoList</span>
-                    <AddNewItemForm addItem={this.props.addTodoList} placeholder={"new TodoList"}/>
+                    <AddNewItemForm addItem={this.props.addTodoList} placeholder={"new TodoList"}
+                                    isFetching={this.props.todoListsIsFetching}/>
                 </div>
                 {
                     this.props.todoListsIsFetching

@@ -3,12 +3,12 @@ import {FilterValueType} from "./TodoList";
 
 type StateType = {
     isHidden: boolean;
-}
+};
 
 type PropsType = {
     filterValue: FilterValueType;
     changeFilter: (filter: FilterValueType) => void;
-}
+};
 
 class TodoListFooter extends React.Component<PropsType, StateType> {
     state: StateType = {
@@ -22,7 +22,6 @@ class TodoListFooter extends React.Component<PropsType, StateType> {
     onActiveFilterClick = () => {this.props.changeFilter("Active")};
 
     render = () => {
-
         let classForAll = this.props.filterValue === "All" ? "filter-active" : "";
         let classForCompleted = this.props.filterValue === "Completed" ? "filter-active" : "";
         let classForActive = this.props.filterValue === "Active" ? "filter-active" : "";
@@ -37,7 +36,7 @@ class TodoListFooter extends React.Component<PropsType, StateType> {
                 {!this.state.isHidden && <span className="showHide" onClick={this.onHideFilterClick}>hide buttons</span>}
                 {this.state.isHidden && <span className="showHide" onClick={this.onShowFilterClick}>show buttons</span>}
             </div>
-        )
+        );
     }
 }
 

@@ -1,5 +1,6 @@
 import React, {ChangeEvent} from "react";
 import {TaskType} from "../types/enities";
+import DeleteButton from "../common/DeleteButton";
 
 type StateType = {
     editMode: boolean;
@@ -43,12 +44,11 @@ class TodoListTask extends React.Component<PropsType, StateType> {
 
     render = () => {
         let statusTask = this.props.task.status;
-        let classNameTask = statusTask === 2 ? "todoList-task done" : "todoList-tasks";
+        let classNameTask = statusTask === 2 ? "taskDone" : "";
 
         return (
-            <div className={classNameTask}>
+            <div className="todoList-task">
                 <input onChange={this.onIsDoneChanged}
-                    // {this.props.changeStatus(this.props.task.id, e.currentTarget.checked)}}
                        type="checkbox"
                        checked={statusTask === 2}
                 />
@@ -59,10 +59,9 @@ class TodoListTask extends React.Component<PropsType, StateType> {
                                  onBlur={this.deactivateEditMode}
                                  onChange={this.onTitleChanged}
                         />
-                        : <span onClick={this.activateEditMode}>{this.state.title}, </span>
+                        : <span onClick={this.activateEditMode} className={classNameTask}>{this.state.title}</span>
                 }
-                <span>priority: {this.props.task.priority}</span>
-                <button className="delete-item" onClick={this.deleteTask}>x</button>
+                <DeleteButton onClick={this.deleteTask}/>
             </div>
         )
     }

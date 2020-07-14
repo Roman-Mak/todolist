@@ -1,4 +1,5 @@
 import React, {ChangeEvent, KeyboardEvent} from "react";
+import AddButton from "../common/AddButton";
 
 type StateType = {
     error: boolean;
@@ -8,6 +9,7 @@ type StateType = {
 type PropsType = {
     addItem: (title: string) => void;
     placeholder: string;
+    isFetching: boolean;
 }
 
 class AddNewItemForm extends React.Component<PropsType, StateType> {
@@ -52,7 +54,7 @@ class AddNewItemForm extends React.Component<PropsType, StateType> {
                            onKeyPress={this.onKeyPress}
                            value={this.state.item}
                     />
-                    <button onClick={this.onAddItemClick}>Add</button>
+                    <AddButton onClick={this.onAddItemClick} disabled={this.props.isFetching}/>
                 </div>
         );
     };

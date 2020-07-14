@@ -8,10 +8,11 @@ import {connect} from "react-redux";
 import {addTask, changeTask, changeTodoListTitle, deleteTask, deleteTodoList, getTasks} from "../redux/todoListReducer";
 import {TaskType, UpdateTaskType} from "../types/enities";
 import {AppStateType} from "../redux/store";
+import DeleteButton from "../common/DeleteButton";
 
 type StateType = {
     filterValue: FilterValueType;
-}
+};
 
 export type FilterValueType = "All" | "Completed" | "Active";
 
@@ -20,7 +21,7 @@ type OwnPropsType = {
     title: string;
     tasks: Array<TaskType>;
     tasksIsFetching: boolean;
-}
+};
 
 type MapDispatchToPropsType = {
     getTasks: (id: string) => void;
@@ -29,7 +30,7 @@ type MapDispatchToPropsType = {
     addTask: (id: string, title: string) => void;
     deleteTask: (todoId: string, taskId: string) => void;
     changeTask: (task: TaskType, obj: UpdateTaskType) => void;
-}
+};
 
 type PropsType = MapDispatchToPropsType & OwnPropsType;
 
@@ -83,12 +84,13 @@ class TodoList extends React.Component<PropsType, StateType> {
         let {tasks = []} = this.props;
         return (
             <div className="todoList">
-                <div className={"todoList-header"}>
-                    <div style={{display: "flex"}}>
+                <div className="todoList-header">
+                    <div style={{display: "flex", marginBottom: "15px"}}>
                         <TodoListTitle title={this.props.title} changeTodoListTitle={this.changeTodoListTitle}/>
-                        <button className="delete-item" onClick={this.deleteTodoList}>x</button>
+                        <DeleteButton onClick={this.deleteTodoList}/>
                     </div>
-                    <AddNewItemForm addItem={this.addTask} placeholder={"new task"}/>
+                    <AddNewItemForm addItem={this.addTask} placeholder={"new task"}
+                                    isFetching={this.props.tasksIsFetching}/>
                 </div>
                 <TodoListTasks tasks={this.taskFilter(tasks)}
                                changeStatus={this.changeStatus}

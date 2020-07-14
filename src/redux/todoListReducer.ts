@@ -24,7 +24,7 @@ const todoListReducer = (state: initialStateType = initialState, action: TodoAct
     let newTodoList;
     switch (action.type) {
         case ADD_TODOLIST:
-            newTodoList = [action.newTodoList, ...state.todoLists];
+            newTodoList = [...state.todoLists, action.newTodoList];
             return {...state, todoLists: newTodoList};
         case ADD_TASK:
             newTodoList = state.todoLists.map(t => {
