@@ -1,46 +1,37 @@
-import React from 'react';
-import './App.css';
-import TodoList from "./components/TodoList";
-import AddNewItemForm from "./components/AddNewItemForm";
+import React from "react";
+import "./App.css";
 import {connect} from "react-redux";
-import {addTodoList, getTodoLists} from "./redux/todoListReducer";
 import TodoListsPreloader from "./common/TodoListsPreloader";
 import {AppStateType} from "./redux/store";
-import {TodoType} from "./types/enities";
+import Header from './components/Header';
+import {getUserLoginData, userLogout} from "./redux/authReducer";
+import TodoLists from "./components/TodoLists";
 
 type MapDispatchToPropsType = {
-    getTodoLists: () => void;
-    addTodoList: (title: string) => void;
+    getUserLoginData: () => void;
+    userLogout: () => void;
 };
 
 type MapStateToPropsType = {
-    todoLists: Array<TodoType>;
-    todoListsIsFetching: boolean;
+    isAuth: boolean;
+    isAuthFetching: boolean;
 };
 
 type PropsType = MapDispatchToPropsType & MapStateToPropsType;
 
 class App extends React.Component<PropsType> {
     componentDidMount() {
-        this.props.getTodoLists();
+        this.props.getUserLoginData();
     }
 
     render = () => {
-        let todoLists = this.props.todoLists.map(t => {
-            return <TodoList key={t.id} id={t.id} title={t.title} tasks={t.tasks} tasksIsFetching={t.taskIsFetching}/>
-        });
+        if (this.props.isAuthFetching) {
+            return <div className="app-container"><TodoListsPreloader/></div>
+        }
         return (
             <div className="App">
-                <div className="headItemForm">
-                    <span className="createTodoText">Create new TodoList</span>
-                    <AddNewItemForm addItem={this.props.addTodoList} placeholder={"new TodoList"}
-                                    isFetching={this.props.todoListsIsFetching}/>
-                </div>
-                {
-                    this.props.todoListsIsFetching
-                    ? <TodoListsPreloader/>
-                    : <div className="todoLists">{todoLists}</div>
-                }
+                <Header isAuth={this.props.isAuth} userLogout={this.props.userLogout}/>
+                <TodoLists/>
             </div>
         );
     };
@@ -48,12 +39,12 @@ class App extends React.Component<PropsType> {
 
 const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     return {
-        todoLists: state.todoLists.todoLists,
-        todoListsIsFetching: state.todoLists.todoListsIsFetching
+        isAuth: state.auth.isAuth,
+        isAuthFetching: state.auth.isAuthFetching
     }
 };
 
 const ConnectedApp = connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>
-(mapStateToProps, {addTodoList, getTodoLists})(App);
+(mapStateToProps, {getUserLoginData, userLogout})(App);
 export default ConnectedApp;
 

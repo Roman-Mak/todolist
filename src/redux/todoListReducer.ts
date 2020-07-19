@@ -1,17 +1,17 @@
-import api from "../api";
+import {todoListsAPI, tasksAPI} from "../api/api";
 import {TaskType, TodoType, UpdateTaskType} from "../types/enities";
 import {Dispatch} from "redux";
 
-const ADD_TODOLIST = "todoList/todoListReducer/ADD-TODOLIST";
-const ADD_TASK = "todoList/todoListReducer/ADD-TASK";
-const CHANGE_TASK = "todoList/todoListReducer/CHANGE-TASK";
-const DELETE_TODOLIST = "todoList/todoListReducer/DELETE-TODOLIST";
-const DELETE_TASK = "todoList/todoListReducer/DELETE-TASK";
-const SET_TODOLISTS = "todoList/todoListReducer/SET-TODOLISTS";
-const SET_TASKS = "todoList/todoListReducer/SET-TASKS";
-const CHANGE_TODOLIST_TITLE = "todoList/todoListReducer/CHANGE-TODOLIST-TITLE";
-const TODOLISTS_IS_FETCHING = "todoList/todoListReducer/TODOLISTS-IS-FETCHING";
-const TASKS_IS_FETCHING = "todoList/todoListReducer/TASKS-IS-FETCHING";
+const ADD_TODOLIST = "todoList/tasksReducer/ADD-TODOLIST";
+const ADD_TASK = "todoList/tasksReducer/ADD-TASK";
+const CHANGE_TASK = "todoList/tasksReducer/CHANGE-TASK";
+const DELETE_TODOLIST = "todoList/tasksReducer/DELETE-TODOLIST";
+const DELETE_TASK = "todoList/tasksReducer/DELETE-TASK";
+const SET_TODOLISTS = "todoList/tasksReducer/SET-TODOLISTS";
+const SET_TASKS = "todoList/tasksReducer/SET-TASKS";
+const CHANGE_TODOLIST_TITLE = "todoList/tasksReducer/CHANGE-TODOLIST-TITLE";
+const TODOLISTS_IS_FETCHING = "todoList/tasksReducer/TODOLISTS-IS-FETCHING";
+const TASKS_IS_FETCHING = "todoList/tasksReducer/TASKS-IS-FETCHING";
 
 const initialState = {
     todoLists: [] as Array<TodoType>,
@@ -193,14 +193,14 @@ const tasksIsFetchingSuccess = (todoListId: string, isFetching: boolean): TasksI
 
 export const getTodoLists = () => (dispatch: Dispatch<TodoActionTypes>) => {
     dispatch(todoListsIsFetchingSuccess(true));
-    api.getTodoLists()
+    todoListsAPI.getTodoLists()
         .then(res => {
             dispatch(setTodoListsSuccess(res));
             dispatch(todoListsIsFetchingSuccess(false));
         });
 };
 export const addTodoList = (newTodoListName: string) => (dispatch: Dispatch<TodoActionTypes>) => {
-    api.addTodoList(newTodoListName)
+    todoListsAPI.addTodoList(newTodoListName)
         .then(res => {
             if (res.resultCode === 0) {
                 let todoList = res.data.item;
@@ -209,7 +209,7 @@ export const addTodoList = (newTodoListName: string) => (dispatch: Dispatch<Todo
         })
 };
 export const changeTodoListTitle = (todoListId: string, newTitle: string) => (dispatch: Dispatch<TodoActionTypes>) => {
-    api.changeTodoListTitle(todoListId, newTitle)
+    todoListsAPI.changeTodoListTitle(todoListId, newTitle)
         .then(res => {
             if (res.resultCode === 0) {
                 dispatch(changeTodoListTitleSuccess(todoListId, newTitle));
@@ -217,7 +217,7 @@ export const changeTodoListTitle = (todoListId: string, newTitle: string) => (di
         })
 };
 export const deleteTodoList = (todoListId: string) => (dispatch: Dispatch<TodoActionTypes>) => {
-    api.deleteTodoList(todoListId)
+    todoListsAPI.deleteTodoList(todoListId)
         .then(res => {
             if (res.resultCode === 0) {
                 dispatch(deleteTodoListSuccess(todoListId));
@@ -226,7 +226,7 @@ export const deleteTodoList = (todoListId: string) => (dispatch: Dispatch<TodoAc
 };
 export const getTasks = (todoListId: string) => (dispatch: Dispatch<TodoActionTypes>) => {
     dispatch(tasksIsFetchingSuccess(todoListId, true));
-    api.getTasks(todoListId)
+    tasksAPI.getTasks(todoListId)
         .then(res => {
             if (!res.error) {
                 let tasks = res.items;
@@ -236,7 +236,7 @@ export const getTasks = (todoListId: string) => (dispatch: Dispatch<TodoActionTy
         })
 };
 export const addTask = (todoListId: string, newTitle: string) => (dispatch: Dispatch<TodoActionTypes>) => {
-    api.createTask(newTitle, todoListId)
+    tasksAPI.createTask(newTitle, todoListId)
         .then(res => {
             if (res.resultCode === 0) {
                 let task = res.data.item;
@@ -245,7 +245,7 @@ export const addTask = (todoListId: string, newTitle: string) => (dispatch: Disp
         })
 };
 export const changeTask = (task: TaskType, obj: UpdateTaskType) => (dispatch: Dispatch<TodoActionTypes>) => {
-    api.changeTask(task, obj)
+    tasksAPI.changeTask(task, obj)
         .then(res => {
             if (res.resultCode === 0) {
                 dispatch(changeTaskSuccess(res.data.item));
@@ -253,7 +253,7 @@ export const changeTask = (task: TaskType, obj: UpdateTaskType) => (dispatch: Di
         })
 };
 export const deleteTask = (todoListId: string, taskId: string) => (dispatch: Dispatch<TodoActionTypes>) => {
-    api.deleteTask(todoListId, taskId)
+    tasksAPI.deleteTask(todoListId, taskId)
         .then(res => {
             if (res.resultCode === 0) {
                 dispatch(deleteTaskSuccess(todoListId, taskId));

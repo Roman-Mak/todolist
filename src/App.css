@@ -1,7 +1,25 @@
 .App {
   display: flex;
   flex-direction: column;
-  margin-top: 50px;
+}
+
+.app-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*.app-preloader {*/
+/*  margin-left: 50%;*/
+/*  transform: translate(-50%);*/
+/*}*/
+
+.header {
+  width: 100%;
+  height: 60px;
+  background-color: green;
 }
 
 .todoLists {
