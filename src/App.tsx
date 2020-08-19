@@ -6,6 +6,7 @@ import {AppStateType} from "./redux/store";
 import Header from './components/Header';
 import {getUserLoginData, userLogout} from "./redux/authReducer";
 import TodoLists from "./components/TodoLists";
+import LoginModal from "./common/LoginModal/LoginModal";
 
 type MapDispatchToPropsType = {
     getUserLoginData: () => void;
@@ -30,6 +31,8 @@ class App extends React.Component<PropsType> {
         }
         return (
             <div className="App">
+                {!this.props.isAuth && <LoginModal email={"free@samuraijs.com"} password={"free"}
+                                                   isAuthFetching={this.props.isAuthFetching}/>}
                 <Header isAuth={this.props.isAuth} userLogout={this.props.userLogout}/>
                 <TodoLists/>
             </div>

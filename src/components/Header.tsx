@@ -1,5 +1,4 @@
 import React from "react";
-import LoginModal from "../common/LoginModal/LoginModal";
 import {useDispatch} from "react-redux";
 
 type PropsType = {
@@ -14,7 +13,6 @@ const Header = ({isAuth, userLogout}: PropsType) => {
     };
     return (
         <>
-            {!isAuth && <LoginModal email={"free@samuraijs.com"} password={"free"}/>}
             <div className="header">
                 {isAuth && <button onClick={onUserLogoutClick}>Log out</button>}
             </div>

@@ -3,12 +3,14 @@ import styles from "./LoginModal.module.css";
 import {useDispatch} from "react-redux";
 import {userLogin} from "../../redux/authReducer";
 
-type LoginModalPropsType = {
+type PropsType = {
     email: string;
     password: string;
+    isAuthFetching: boolean;
 };
 
-const LoginModal = (props: LoginModalPropsType) => {
+const LoginModal = (props: PropsType) => {
+    const {isAuthFetching} = props;
     const [email, setEmail] = useState<string>(props.email);
     const [password, setPassword] = useState<string>(props.password);
     const [rememberMe, setRememberMe] = useState<boolean>(true);
@@ -44,7 +46,7 @@ const LoginModal = (props: LoginModalPropsType) => {
                     <input type={"checkbox"} checked={rememberMe} onChange={onRememberMeChange}/>
                     <span>remember me</span>
                 </label>
-                <button onClick={onLoginClick}>Login</button>
+                <button onClick={onLoginClick} disabled={isAuthFetching}>Login</button>
             </div>
         </>
     )

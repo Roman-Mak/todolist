@@ -1,10 +1,5 @@
-import React, {ChangeEvent, KeyboardEvent} from "react";
+import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from "react";
 import AddButton from "../common/AddButton";
-
-type StateType = {
-    error: boolean;
-    item: string;
-}
 
 type PropsType = {
     addItem: (title: string) => void;
@@ -12,52 +7,43 @@ type PropsType = {
     isFetching: boolean;
 }
 
-class AddNewItemForm extends React.Component<PropsType, StateType> {
-    state: StateType = {
-        error: false,
-        item: ""
-    };
+const AddNewItemForm = ({addItem, placeholder, isFetching}: PropsType) => {
+    const [error, setError] = useState<string>("");
+    const [item, setItem] = useState<string>("");
 
-    onAddItemClick = () => {
-        let newItem = this.state.item;
-        this.setState({item: ""});
-        if (newItem === "") {
-            this.setState({error: true});
+    const onAddItemClick = useCallback(() => {
+        if (item === "") {
+            setError("error");
         } else {
-            this.setState({error: false});
-            this.props.addItem(newItem);
+            setError("");
+            addItem(item);
+            setItem("");
         }
+    },[addItem, item]);
+
+    const onItemChanged = (e: ChangeEvent<HTMLInputElement>) => {
+        setError("");
+        setItem(e.currentTarget.value)
     };
 
-    onItemChanged = (e: ChangeEvent<HTMLInputElement>) => {
-        this.setState({
-            error: false,
-            item: e.currentTarget.value
-        });
-    };
-
-    onKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    const onKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
-            this.onAddItemClick();
+            onAddItemClick();
         }
     };
 
-    render = () => {
-        let inputClass = this.state.error ? "error" : "";
-
-        return (
-                <div className="addNewTaskForm">
-                    <input className={inputClass}
-                           type="text"
-                           placeholder={this.props.placeholder}
-                           onChange={this.onItemChanged}
-                           onKeyPress={this.onKeyPress}
-                           value={this.state.item}
-                    />
-                    <AddButton onClick={this.onAddItemClick} disabled={this.props.isFetching}/>
-                </div>
-        );
-    };
-}
+    return (
+        <div className="addNewTaskForm">
+            <input className={error}
+                   type="text"
+                   placeholder={placeholder}
+                   onChange={onItemChanged}
+                   onKeyPress={onKeyPress}
+                   value={item}
+            />
+            <AddButton onClick={onAddItemClick} disabled={isFetching}/>
+        </div>
+    );
+};
 
 export default AddNewItemForm;

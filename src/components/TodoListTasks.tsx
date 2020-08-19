@@ -11,23 +11,20 @@ type PropsType = {
     tasksIsFetching: boolean;
 };
 
-class TodoListTasks extends React.Component<PropsType> {
-    render = () => {
-        let taskElements = this.props.tasks.map(task => {
-            return <TodoListTask task={task}
-                                 changeStatus={this.props.changeStatus}
-                                 changeTitle={this.props.changeTitle}
-                                 key={task.id}
-                                 deleteTask={this.props.deleteTask}
-            />
-        });
+const TodoListTasks = ({tasks, changeStatus, changeTitle, deleteTask, tasksIsFetching}: PropsType) => {
+    let taskElements = tasks.map(task =>
+        <TodoListTask task={task}
+                      changeStatus={changeStatus}
+                      changeTitle={changeTitle}
+                      key={task.id}
+                      deleteTask={deleteTask}/>
+    );
 
-        return (
-            <div className="todoList-tasks">
-                {this.props.tasksIsFetching ? <TasksPreloader/> : taskElements}
-            </div>
-        );
-    };
-}
+    return (
+        <div className="todoList-tasks">
+            {tasksIsFetching ? <TasksPreloader/> : taskElements}
+        </div>
+    );
+};
 
 export default TodoListTasks;

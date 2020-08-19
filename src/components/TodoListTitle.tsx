@@ -1,49 +1,36 @@
-import React, {ChangeEvent} from "react";
-
-type StateType = {
-    editMode: boolean;
-    title: string;
-}
+import React, {ChangeEvent, useState} from "react";
 
 type PropsType = {
     title: string;
     changeTodoListTitle: (title: string) => void;
 }
 
-class TodoListTitle extends React.Component<PropsType, StateType> {
-    state: StateType = {
-        editMode: false,
-        title: this.props.title
+const TodoListTitle = ({title, changeTodoListTitle}: PropsType) => {
+    const [editMode, setEditMode] = useState<boolean>(false);
+    const [newTitle, setNewTitle] = useState<string>(title);
+
+    const deactivateEditMode = () => {
+        changeTodoListTitle(newTitle);
+        setEditMode(false);
     };
 
-    activateEditMode = () => {
-        this.setState({editMode: true})
+    const onTitleChanged = (e: ChangeEvent<HTMLInputElement>) => {
+        setNewTitle(e.currentTarget.value);
     };
 
-    deactivateEditMode = () => {
-        this.props.changeTodoListTitle(this.state.title);
-        this.setState({editMode: false})
-    };
-
-    onTitleChanged = (e: ChangeEvent<HTMLInputElement>) => {
-        this.setState({title: e.currentTarget.value})
-    };
-
-    render = () => {
-        return (
-            <>
-                {
-                    this.state.editMode
-                        ? <input value={this.state.title}
-                                 autoFocus={true}
-                                 onBlur={this.deactivateEditMode}
-                                 onChange={this.onTitleChanged}
-                        />
-                        : <h3 className="todoList-header__title" onClick={this.activateEditMode}>{this.state.title}</h3>
-                }
-            </>
-        );
-    };
-}
+    return (
+        <>
+            {
+                editMode
+                    ? <input value={newTitle}
+                             autoFocus={true}
+                             onBlur={deactivateEditMode}
+                             onChange={onTitleChanged}
+                    />
+                    : <h3 className="todoList-header__title" onClick={() => setEditMode(true)}>{newTitle}</h3>
+            }
+        </>
+    );
+};
 
 export default TodoListTitle;

@@ -1,70 +1,52 @@
-import React, {ChangeEvent} from "react";
+import React, {ChangeEvent, useState} from "react";
 import {TaskType} from "../types/enities";
 import DeleteButton from "../common/DeleteButton";
-
-type StateType = {
-    editMode: boolean;
-    title: string;
-}
 
 type PropsType = {
     task: TaskType;
     changeStatus: (task: TaskType, status: number) => void;
     changeTitle: (task: TaskType, title: string) => void;
     deleteTask: (id: string) => void;
-}
+};
 
-class TodoListTask extends React.Component<PropsType, StateType> {
-    state: StateType = {
-        editMode: false,
-        title: this.props.task.title
+const TodoListTask = ({task, changeStatus, changeTitle, deleteTask}: PropsType) => {
+    const [editMode, setEditMode] = useState<boolean>(false);
+    const [title, setTitle] = useState<string>(task.title);
+
+    const deactivateEditMode = () => {
+        changeTitle(task, title);
+        setEditMode(false);
     };
 
-    activateEditMode = () => {
-        this.setState({editMode: true})
+    const onIsDoneChanged = (e: ChangeEvent<HTMLInputElement>) => {
+        let status = e.currentTarget.checked ? 2 : 0;
+        changeStatus(task, status);
     };
 
-    deactivateEditMode = () => {
-        this.props.changeTitle(this.props.task, this.state.title);
-        this.setState({editMode: false})
+    const onTitleChanged = (e: ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.currentTarget.value);
     };
 
-    onIsDoneChanged = (e: ChangeEvent<HTMLInputElement>) => {
-        let status = e.currentTarget.checked ? 2: 0;
-        this.props.changeStatus(this.props.task, status);
-    };
+    let classNameTask = task.status === 2 ? "taskDone" : "";
 
-    onTitleChanged = (e: ChangeEvent<HTMLInputElement>) => {
-        this.setState({title: e.currentTarget.value})
-    };
-
-    deleteTask = () => {
-        this.props.deleteTask(this.props.task.id);
-    };
-
-    render = () => {
-        let statusTask = this.props.task.status;
-        let classNameTask = statusTask === 2 ? "taskDone" : "";
-
-        return (
-            <div className="todoList-task">
-                <input onChange={this.onIsDoneChanged}
-                       type="checkbox"
-                       checked={statusTask === 2}
-                />
-                {
-                    this.state.editMode
-                        ? <input value={this.state.title}
-                                 autoFocus={true}
-                                 onBlur={this.deactivateEditMode}
-                                 onChange={this.onTitleChanged}
-                        />
-                        : <span onClick={this.activateEditMode} className={classNameTask}>{this.state.title}</span>
-                }
-                <DeleteButton onClick={this.deleteTask}/>
-            </div>
-        )
-    }
-}
+    return (
+        <div className="todoList-task">
+            <input onChange={onIsDoneChanged}
+                   type="checkbox"
+                   checked={task.status === 2}
+            />
+            {
+                editMode
+                    ? <input value={title}
+                             autoFocus={true}
+                             onBlur={deactivateEditMode}
+                             onChange={onTitleChanged}
+                    />
+                    : <span onClick={() => setEditMode(true)} className={classNameTask}>{title}</span>
+            }
+            <DeleteButton onClick={() => deleteTask(task.id)}/>
+        </div>
+    )
+};
 
 export default TodoListTask;

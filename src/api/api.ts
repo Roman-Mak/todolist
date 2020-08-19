@@ -4,7 +4,7 @@ import {TaskType, TodoType, UpdateTaskType} from "../types/enities";
 const instance = axios.create({
     baseURL: "https://social-network.samuraijs.com/api/1.1",
     withCredentials: true,
-    headers: {"API-KEY": "cd6b66cc-d0ef-4fb7-9f54-808df7c15bee"}
+    headers: {"API-KEY": "b29a2be9-93e2-498c-9365-70a515100fee"}
 });
 
 type CommonApiType<T> = {

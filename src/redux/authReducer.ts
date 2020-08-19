@@ -1,5 +1,7 @@
 import {authAPI} from "../api/api";
-import { Dispatch } from "redux";
+import {Dispatch} from "redux";
+import {ThunkAction} from "redux-thunk";
+import {AppStateType} from "./store";
 
 const SET_USER_LOGIN_DATA = "todoList/authReducer/SET-USER-LOGIN-DATA";
 const TOGGLE_IS_AUTH = "todoList/authReducer/TOGGLE-IS-AUTH";
@@ -42,7 +44,9 @@ export const toggleIsAuth = (isAuth: boolean): ToggleIsAuthType => ({type: TOGGL
 type AuthFetchingType = {type: typeof AUTH_FETCHING; isAuthFetching: boolean};
 const authFetching = (isAuthFetching: boolean): AuthFetchingType => ({type: AUTH_FETCHING, isAuthFetching});
 
-export const getUserLoginData = () => async (dispatch: Dispatch<AuthActionType>) => {
+
+export const getUserLoginData = (): ThunkAction<Promise<void>, AppStateType, unknown, AuthActionType> =>
+    async (dispatch) => {
     dispatch(authFetching(true));
     try {
         const data = await authAPI.authMe();
@@ -59,11 +63,14 @@ export const getUserLoginData = () => async (dispatch: Dispatch<AuthActionType>)
         dispatch(authFetching(false));
     }
 };
-export const userLogin = (email: string, password: string, rememberMe: boolean) => async (dispatch: Dispatch<AuthActionType>) => {
+
+export const userLogin = (email: string, password: string, rememberMe: boolean): ThunkAction<Promise<void>, AppStateType, unknown, AuthActionType> =>
+    async (dispatch) => {
     dispatch(authFetching(true));
     try {
         const data = await authAPI.authLogin(email, password, rememberMe);
         if (data.resultCode === 0) {
+            // await dispatch(getUserLoginData())
             let {id, email, login} = data.data;
             dispatch(setUserLoginData(id, email, login));
             dispatch(toggleIsAuth(true));

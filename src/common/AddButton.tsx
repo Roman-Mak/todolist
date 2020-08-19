@@ -15,4 +15,4 @@ const AddButton = (props: AddButtonType) => {
     );
 };
 
-export default AddButton;
+export default React.memo(AddButton);
